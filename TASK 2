@@ -1,0 +1,38 @@
+from textblob import TextBlob
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# Function to perform sentiment analysis
+def analyze_sentiment(text):
+    # Tokenize the text
+    words = word_tokenize(text)
+    
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    filtered_words = [word for word in words if word.lower() not in stop_words]
+    
+    # Join filtered words into a single string
+    filtered_text = ' '.join(filtered_words)
+    
+    # Use TextBlob to calculate sentiment
+    blob = TextBlob(filtered_text)
+    sentiment_score = blob.sentiment.polarity
+    
+    # Determine sentiment
+    if sentiment_score > 0:
+        sentiment = 'positive'
+    elif sentiment_score < 0:
+        sentiment = 'negative'
+    else:
+        sentiment = 'neutral'
+    
+    return sentiment, sentiment_score
+
+# Example usage:
+text = "I love natural language processing! It's amazing."
+sentiment, score = analyze_sentiment(text)
+print(f'Text: "{text}"')
+print(f'Sentiment: {sentiment} (Score: {score})')
